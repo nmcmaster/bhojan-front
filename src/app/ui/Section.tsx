@@ -13,6 +13,7 @@ export default function Section({
 	items: Item[];
 	picture?: string;
 }) {
+
 	return (
 		<motion.div
 			initial={{ opacity: 0 }}
@@ -48,7 +49,7 @@ export default function Section({
 								transition={{ duration: 1 }}
 								className="bg-amber-100 rounded-full shadow-2xl w-7 h-7 absolute -bottom-0.5 -right-0"
 							>
-								<PlusCircleIcon className="text-gray-900" />
+								<PlusCircleIcon className="text-rose-950 shadow" />
 							</motion.div>
 						</div>
 					</li>
