@@ -1,21 +1,44 @@
 "use client";
 
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import Header from "./Header";
 import ShoppingCartContainer from "./ShoppingCartContainer";
 import Section from "./Section";
 import { CartContent } from "../utils/types";
 import { appetizers, vegEntree } from "../utils/data";
+import Toast from "./Toast";
 
 export default function Main() {
-	const [cartContents, setCartContents] = useState<CartContent[]>([
-		{ item: { name: "", description: "", price: 0 }, quantity: 0 },
-	]);
+	const [cartContents, setCartContents] = useState<CartContent[]>([]);
+	const [lastItemAdded, setLastItemAdded] = useState("");
+	const [showToast, setShowToast] = useState(false);
+
+	useEffect(() => {
+		if (cartContents.length > 0) {
+			setShowToast(true);
+		}
+	}, [cartContents]);
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			setShowToast(false);
+		}, 1000);
+
+		return () => clearInterval(interval);
+	}, [showToast]);
 
 	return (
 		<>
 			<Header />
-			<ShoppingCartContainer />
+			<ShoppingCartContainer
+				cartContents={cartContents}
+				setCartContents={setCartContents}
+			/>
+			<Toast
+				setShow={setShowToast}
+				show={showToast}
+				itemName={lastItemAdded}
+			/>
 			<div className="hidden sm:flex space-x-3">
 				<div className="pt-3 w-1/2 space-y-3">
 					<Section
@@ -24,6 +47,7 @@ export default function Main() {
 						items={appetizers}
 						cartContents={cartContents}
 						setCartContents={setCartContents}
+						setLastItemAdded={setLastItemAdded}
 					/>
 				</div>
 				<div className="pt-3 w-1/2 space-y-3">
@@ -32,6 +56,7 @@ export default function Main() {
 						items={vegEntree}
 						cartContents={cartContents}
 						setCartContents={setCartContents}
+						setLastItemAdded={setLastItemAdded}
 					/>
 				</div>
 			</div>

@@ -10,24 +10,42 @@ export default function Section({
 	picture,
 	cartContents,
 	setCartContents,
+	setLastItemAdded
 }: {
 	sectionName: string;
 	items: Item[];
 	picture?: string;
 	cartContents: CartContent[];
 	setCartContents: (CartContents: CartContent[]) => void;
+	setLastItemAdded: (itemName: string) => void;
 }) {
+	// function addToCart(item: Item) {
+	// 	const existingItem = cartContents.find(cartItem => cartItem.item.name === item.name);
+
+	// 	if (existingItem) {
+	// 		existingItem.quantity += 1;
+	// 		setCartContents([...cartContents]);
+	// 	} else {
+	// 		setCartContents([...cartContents, { item, quantity: 1 }]);
+	// 	}
+	// } non-functional programming solution
+
 	function addToCart(item: Item) {
-		for (const cartItem of cartContents) {
-			if (item.name === cartItem.item.name) {
-				cartItem.quantity += 1;
-				setCartContents([...cartContents]);
-			} else {
-				setCartContents([...cartContents, { item, quantity: 1 }]);
-			}
+		const itemExists = cartContents.some(
+			(cartItem) => cartItem.item.name === item.name
+		);
+
+		if (itemExists) {
+			const updatedCart = cartContents.map((cartItem) =>
+				cartItem.item.name === item.name
+					? { ...cartItem, quantity: cartItem.quantity + 1 }
+					: cartItem
+			);
+			setCartContents(updatedCart);
+		} else {
+			setCartContents([...cartContents, { item, quantity: 1 }]);
 		}
 	}
-
 
 	return (
 		<motion.div
@@ -62,7 +80,10 @@ export default function Section({
 								animate={{ rotate: -360, scale: [1, 1.7, 1] }}
 								transition={{ duration: 1 }}
 								className="bg-amber-100 rounded-full shadow-2xl w-7 h-7 absolute -bottom-0.5 -right-0"
-								onClick={() => addToCart(item)}
+								onClick={() => {
+									setLastItemAdded(item.name);
+									addToCart(item);
+								}}
 							>
 								<PlusCircleIcon className="text-rose-950 hover:text-rose-600 shadow cursor-pointer" />
 							</motion.div>

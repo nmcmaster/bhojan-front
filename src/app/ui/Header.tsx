@@ -18,6 +18,7 @@ export default function Header() {
 				height={300}
 				alt="Bhojan Indian Food"
 				className="mx-auto pt-2"
+				priority
 			/>
 			<h1 className="tracking-widest text-4xl font-bold pt-2 text-amber-100">
 				Indian Food
