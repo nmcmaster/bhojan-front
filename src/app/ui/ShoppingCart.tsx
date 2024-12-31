@@ -6,44 +6,25 @@ import {
 	DialogPanel,
 	DialogTitle,
 } from "@headlessui/react";
-import { PlusCircleIcon, PlusIcon } from "@heroicons/react/16/solid";
+import { PlusIcon } from "@heroicons/react/16/solid";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-
-const products = [
-	{
-		id: 1,
-		name: "Throwback Hip Bag",
-		href: "#",
-		color: "Salmon",
-		price: "$90.00",
-		quantity: 1,
-		imageSrc:
-			"https://tailwindui.com/plus/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
-		imageAlt:
-			"Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
-	},
-	{
-		id: 2,
-		name: "Medium Stuff Satchel",
-		href: "#",
-		color: "Blue",
-		price: "$32.00",
-		quantity: 1,
-		imageSrc:
-			"https://tailwindui.com/plus/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
-		imageAlt:
-			"Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
-	},
-	// More products...
-];
+import { CartContent } from "../utils/types";
 
 export default function ShoppingCart({
 	open,
 	setOpen,
+	cartContents,
+	setCartContents,
 }: {
 	open: boolean;
 	setOpen: (open: boolean) => void;
+	cartContents: CartContent[];
+	setCartContents: (cartContents: CartContent[]) => void;
 }) {
+	const subtotal = cartContents.reduce((acc, item) => {
+		return acc + item.item.price * item.quantity;
+	}, 0);
+
 	return (
 		<Dialog open={open} onClose={setOpen} className="relative z-30">
 			<DialogBackdrop
@@ -68,7 +49,7 @@ export default function ShoppingCart({
 											<button
 												type="button"
 												onClick={() => setOpen(false)}
-												className="relative -m-2 p-2 text-gray-400 hover:text-gray-500"
+												className="relative -m-2 p-2 text-rose-400 hover:text-gray-500"
 											>
 												<span className="absolute -inset-0.5" />
 												<span className="sr-only">
@@ -88,9 +69,17 @@ export default function ShoppingCart({
 												role="list"
 												className="-my-6 divide-y divide-gray-500"
 											>
-												{products.map((product) => (
+												{cartContents.length === 0 && (
+													<h1 className="text-gray-100 pt-4">
+														You don't have any items
+														in your cart. Please
+														select some delicious
+														food to get started!
+													</h1>
+												)}
+												{cartContents.map((product) => (
 													<li
-														key={product.id}
+														key={product.item.name}
 														className="flex py-6"
 													>
 														<div className="ml-4 flex flex-1 flex-col">
@@ -100,14 +89,26 @@ export default function ShoppingCart({
 																		<div>
 																			{" "}
 																			{
-																				product.name
+																				product
+																					.item
+																					.name
 																			}
 																		</div>
 																	</h3>
 																	<div className="ml-4 text-gray-100">
-																		{
-																			product.price
-																		}
+																		$
+																		{product.item.price
+																			.toString()
+																			.slice(
+																				0,
+																				-2
+																			)}
+																		.
+																		{product.item.price
+																			.toString()
+																			.slice(
+																				-2
+																			)}
 																	</div>
 																</div>
 															</div>
@@ -143,9 +144,17 @@ export default function ShoppingCart({
 								<div className="border-t border-gray-500 px-4 py-6 sm:px-6">
 									<div className="flex justify-between text-base font-medium text-amber-100">
 										<p>Subtotal</p>
-										<p className="text-gray-100">$262.00</p>
+										<p className="text-gray-100">
+											{" "}
+											$
+											{subtotal > 0
+												? `${subtotal
+														.toString()
+														.slice(0, -2)}.${subtotal.toString().slice(-2)}`
+												: "0.00"}
+										</p>
 									</div>
-									<p className="mt-0.5 text-sm text-gray-100">
+									<p className="mt-1 text-sm text-gray-100">
 										Delivery fee and taxes calculated at
 										checkout.
 									</p>

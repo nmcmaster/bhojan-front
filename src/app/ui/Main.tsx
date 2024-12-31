@@ -22,10 +22,10 @@ export default function Main() {
 	useEffect(() => {
 		const interval = setInterval(() => {
 			setShowToast(false);
-		}, 1000);
+		}, 2000);
 
 		return () => clearInterval(interval);
-	}, [showToast]);
+	}, [cartContents]);
 
 	return (
 		<>

@@ -15,10 +15,7 @@ export default function CartContainer({
 	const [open, setOpen] = useState(false);
 	let quantity = 0;
 	if (cartContents) {
-		 quantity = cartContents.reduce(
-			(acc, item) => acc + item.quantity,
-			0
-		);
+		quantity = cartContents.reduce((acc, item) => acc + item.quantity, 0);
 	}
 	return (
 		<>
@@ -47,7 +44,12 @@ export default function CartContainer({
 			>
 				<ShoppingCartIcon className="w-16 cursor-pointer h-16 fixed top-3 right-3" />
 			</motion.div>
-			<ShoppingCart open={open} setOpen={setOpen} />
+			<ShoppingCart
+				open={open}
+				setOpen={setOpen}
+				cartContents={cartContents}
+				setCartContents={setCartContents}
+			/>
 		</>
 	);
 }
