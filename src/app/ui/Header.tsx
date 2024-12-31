@@ -37,14 +37,14 @@ export default function Header() {
 						animate={{ y: [0, -7, 0, 7, 0, -7, 0, 7, 0] }}
 						transition={{ duration: 2 }}
 					>
-						<ArrowDownIcon className="w-8 h-8" />
+						<ArrowDownIcon className="w-8 h-8 text-gray-100" />
 					</motion.div>
 					<div>Order Online</div>
 					<motion.div
 						animate={{ y: [7, 0, -7, 0, 7, 0, -7, 0, 7, 0] }}
 						transition={{ duration: 2 }}
 					>
-						<ArrowDownIcon className="w-8 h-8" />
+						<ArrowDownIcon className="w-8 h-8 text-gray-100" />
 					</motion.div>
 				</div>
 			</div>

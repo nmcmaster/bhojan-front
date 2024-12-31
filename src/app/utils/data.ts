@@ -1,3 +1,5 @@
+import { Item } from "./types";
+
 export const vegEntree: Item[] = [
 	{
 		name: "Aloo Gobi",
@@ -81,9 +83,3 @@ export const appetizers: Item[] = [
 		price: 995,
 	},
 ];
-
-export interface Item {
-	name: string;
-	description: string;
-	price: number; // in pennies
-}

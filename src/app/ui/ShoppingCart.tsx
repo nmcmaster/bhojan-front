@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
 	Dialog,
 	DialogBackdrop,
@@ -45,7 +44,7 @@ export default function ShoppingCart({
 	setOpen: (open: boolean) => void;
 }) {
 	return (
-		<Dialog open={open} onClose={setOpen} className="relative z-10">
+		<Dialog open={open} onClose={setOpen} className="relative z-30">
 			<DialogBackdrop
 				transition
 				className="fixed inset-0 bg-gray-500/75 transition-opacity duration-500 ease-in-out data-[closed]:opacity-0"
