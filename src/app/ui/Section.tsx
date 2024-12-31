@@ -64,7 +64,7 @@ export default function Section({
 								className="bg-amber-100 rounded-full shadow-2xl w-7 h-7 absolute -bottom-0.5 -right-0"
 								onClick={() => addToCart(item)}
 							>
-								<PlusCircleIcon className="text-rose-950 hover:text-rose-600 shadow" />
+								<PlusCircleIcon className="text-rose-950 hover:text-rose-600 shadow cursor-pointer" />
 							</motion.div>
 						</div>
 					</li>

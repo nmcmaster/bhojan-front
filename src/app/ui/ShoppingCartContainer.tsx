@@ -12,25 +12,27 @@ export default function CartContainer() {
 			<motion.div
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
-				className="absolute top-2 right-2 z-10 rounded-full w-6 h-6 text-center font-bold bg-amber-100 border border-amber-100"
+				onClick={() => setOpen(true)}
+				className="absolute top-3 right-2 z-10 rounded-full w-6 h-6 text-center font-bold bg-amber-100 border cursor-pointer border-amber-100"
 			>
 				1
 			</motion.div>
 			<motion.div
 				animate={{
 					color: [
-						"#fef3c7",
 						"#00000",
 						"#fef3c7",
-						"#000000",
+						"#be123c",
+						"#00000",
+						"#be123c",
 						"#fef3c7",
 						"#000000",
 					],
 				}}
-				transition={{ duration: 5 }}
+				transition={{ duration: 6 }}
 				onClick={() => setOpen(true)}
 			>
-				<ShoppingCartIcon className="w-14 cursor-pointer h-14 absolute top-3 right-3" />
+				<ShoppingCartIcon className="w-16 cursor-pointer h-16 absolute top-3 right-3" />
 			</motion.div>
 			<ShoppingCart open={open} setOpen={setOpen} />
 		</>
