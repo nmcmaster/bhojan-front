@@ -34,10 +34,9 @@ export default function Main() {
 			<Toast
 				show={showToast && !showCart && cartContents.length > 0}
 				setShow={setShowToast}
-				// itemName={lastItemAdded}
-				itemName="test"
+				itemName={lastItemAdded}
 			/>
-			<div className="hidden sm:flex sm:gap-x-4">
+			<div className="hidden md:flex sm:gap-x-4">
 				<div className="w-1/2">
 					{menu
 						.filter((section) => section.position === "left")
@@ -73,7 +72,7 @@ export default function Main() {
 						))}
 				</div>
 			</div>
-			<div className="sm:hidden">
+			<div className="md:hidden">
 				{menu.map((section) => (
 					<MenuSection
 						sectionName={section.sectionName}
