@@ -9,8 +9,72 @@ import {
 import { MinusIcon, PlusIcon } from "@heroicons/react/16/solid";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { CartContent } from "../utils/types";
+import { useMemo, useCallback } from "react";
+import React from "react";
 
-export default function ShoppingCart({
+const formatPrice = (priceInPennies: number): string => {
+	const dollars = Math.floor(priceInPennies / 100);
+	const cents = priceInPennies % 100;
+	return `$${dollars}.${cents.toString().padStart(2, '0')}`;
+};
+
+// Memoize individual cart items to prevent unnecessary re-renders
+const CartItem = React.memo(({
+	product,
+	onIncrement,
+	onDecrement,
+	onRemove
+}: {
+	product: CartContent;
+	onIncrement: (name: string) => void;
+	onDecrement: (name: string) => void;
+	onRemove: (name: string) => void;
+}) => (
+	<li className="flex py-6">
+		<div className="ml-4 flex flex-1 flex-col">
+			<div>
+				<div className="flex justify-between text-base font-medium">
+					<h3 className="text-amber-100 mb-1">
+						<div>{product.item.name}</div>
+					</h3>
+					<div className="ml-4 text-gray-100">
+						{formatPrice(product.item.price)}
+					</div>
+				</div>
+			</div>
+			<div className="flex flex-1 items-end justify-between text-sm">
+				<div className="text-gray-100 flex">
+					<div className="mr-1.5">
+						Qty: {product.quantity}
+					</div>
+
+					<PlusIcon
+						className="w-5 h-5 text-rose-400 cursor-pointer"
+						onClick={() => onIncrement(product.item.name)}
+					/>
+					<MinusIcon
+						className="w-5 h-5 text-rose-400 cursor-pointer"
+						onClick={() => onDecrement(product.item.name)}
+					/>
+				</div>
+
+				<div className="flex">
+					<button
+						type="button"
+						onClick={() => onRemove(product.item.name)}
+						className="font-medium text-rose-400 hover:text-gray-100"
+					>
+						Remove
+					</button>
+				</div>
+			</div>
+		</div>
+	</li>
+));
+
+CartItem.displayName = 'CartItem';
+
+const ShoppingCart = ({
 	open,
 	setOpen,
 	cartContents,
@@ -20,8 +84,8 @@ export default function ShoppingCart({
 	setOpen: (open: boolean) => void;
 	cartContents: CartContent[];
 	setCartContents: (cartContents: CartContent[] | ((prev: CartContent[]) => CartContent[])) => void;
-}) {
-	const handleIncrement = (productName: string) => {
+}) => {
+	const handleIncrement = useCallback((productName: string) => {
 		setCartContents((prevContents: CartContent[]): CartContent[] => 
 			prevContents.map((cartItem: CartContent): CartContent => 
 				cartItem.item.name === productName
@@ -29,17 +93,17 @@ export default function ShoppingCart({
 					: cartItem
 			)
 		);
-	};
+	}, [setCartContents]);
 
-	const handleRemove = (productName: string) => {
+	const handleRemove = useCallback((productName: string) => {
 		setCartContents((prevContents: CartContent[]): CartContent[] => 
 			prevContents.filter((cartItem: CartContent): boolean => 
 				cartItem.item.name !== productName
 			)
 		);
-	};
+	}, [setCartContents]);
 
-	const handleDecrement = (productName: string) => {
+	const handleDecrement = useCallback((productName: string) => {
 		setCartContents((prevContents: CartContent[]): CartContent[] => 
 			prevContents
 				.map((cartItem: CartContent): CartContent => 
@@ -49,11 +113,34 @@ export default function ShoppingCart({
 				)
 				.filter((cartItem: CartContent): boolean => cartItem.quantity > 0)
 		);
-	};
+	}, [setCartContents]);
 
-	const subtotal = cartContents.reduce((acc, item) => {
-		return acc + item.item.price * item.quantity;
-	}, 0);
+	const subtotal = useMemo(() => 
+		cartContents.reduce((acc, item) => 
+			acc + item.item.price * item.quantity, 0
+		),
+		[cartContents]
+	);
+
+	// Memoize the cart items list to prevent unnecessary re-renders
+	const cartItemsList = useMemo(() => (
+		cartContents.length === 0 ? (
+			<h1 className="text-gray-100 pt-4">
+				You don't have any items in your cart. Please
+				select some delicious food to get started!
+			</h1>
+		) : (
+			cartContents.map((product) => (
+				<CartItem
+					key={product.item.name}
+					product={product}
+					onIncrement={handleIncrement}
+					onDecrement={handleDecrement}
+					onRemove={handleRemove}
+				/>
+			))
+		)
+	), [cartContents, handleIncrement, handleDecrement, handleRemove]);
 
 	return (
 		<Dialog open={open} onClose={setOpen} className="relative z-30">
@@ -99,82 +186,7 @@ export default function ShoppingCart({
 												role="list"
 												className="-my-6 divide-y divide-gray-500"
 											>
-												{cartContents.length === 0 ? (
-													<h1 className="text-gray-100 pt-4">
-														You don't have any items
-														in your cart. Please
-														select some delicious
-														food to get started!
-													</h1>
-												) : (
-													cartContents.map((product) => (
-													<li
-														key={product.item.name}
-														className="flex py-6"
-													>
-														<div className="ml-4 flex flex-1 flex-col">
-															<div>
-																<div className="flex justify-between text-base font-medium">
-																	<h3 className="text-amber-100 mb-1">
-																		<div>
-																			{" "}
-																			{
-																				product
-																					.item
-																					.name
-																			}
-																		</div>
-																	</h3>
-																	<div className="ml-4 text-gray-100">
-																		$
-																		{product.item.price
-																			.toString()
-																			.slice(
-																				0,
-																				-2
-																			)}
-																		.
-																		{product.item.price
-																			.toString()
-																			.slice(
-																				-2
-																			)}
-																	</div>
-																</div>
-															</div>
-															<div className="flex flex-1 items-end justify-between text-sm">
-																<div className="text-gray-100 flex">
-																	<div className="mr-1.5">
-																		Qty:{" "}
-																		{
-																			product.quantity
-																		}
-																	</div>
-
-																	<PlusIcon
-																		className="w-5 h-5 text-rose-400 cursor-pointer"
-																		onClick={() => handleIncrement(product.item.name)}
-																	/>
-																	<MinusIcon
-																		className="w-5 h-5 text-rose-400 cursor-pointer"
-																		onClick={() => handleDecrement(product.item.name)}
-																	/>
-																</div>
-
-																<div className="flex">
-																	<button
-																		type="button"
-																		onClick={() => handleRemove(product.item.name)}
-																		className="font-medium text-rose-400 hover:text-gray-100"
-																	>
-																		Remove
-																	</button>
-																</div>
-															</div>
-														</div>
-													</li>
-													))
-												)}
+												{cartItemsList}
 											</ul>
 										</div>
 									</div>
@@ -185,17 +197,7 @@ export default function ShoppingCart({
 										<div>Subtotal</div>
 										<div className="text-gray-100">
 											{" "}
-											$
-											{subtotal > 0
-												? `${subtotal
-														.toString()
-														.slice(
-															0,
-															-2
-														)}.${subtotal
-														.toString()
-														.slice(-2)}`
-												: "0.00"}
+											{subtotal > 0 ? formatPrice(subtotal) : "$0.00"}
 										</div>
 									</div>
 									<p className="mt-1 text-sm text-gray-100">
@@ -233,4 +235,6 @@ export default function ShoppingCart({
 			</div>
 		</Dialog>
 	);
-}
+};
+
+export default React.memo(ShoppingCart);

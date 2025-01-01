@@ -12,6 +12,7 @@ export default function Main() {
 	const [cartContents, setCartContents] = useState<CartContent[]>([]);
 	const [lastItemAdded, setLastItemAdded] = useState("");
 	const [showToast, setShowToast] = useState(false);
+	const [showCart, setShowCart] = useState(false);
 
 	// useEffect(() => {
 	// 	for (const product of cartContents) {
@@ -40,12 +41,14 @@ export default function Main() {
 		<>
 			<Header />
 			<ShoppingCartContainer
+				showCart={showCart}
+				setShowCart={setShowCart}
 				cartContents={cartContents}
 				setCartContents={setCartContents}
 			/>
 			<Toast
+				show={showToast && !showCart}
 				setShow={setShowToast}
-				show={showToast}
 				itemName={lastItemAdded}
 			/>
 			<div className="hidden sm:flex space-x-3">
