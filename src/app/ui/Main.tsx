@@ -15,12 +15,6 @@ export default function Main() {
 	const [showCart, setShowCart] = useState(false);
 
 	useEffect(() => {
-		if (cartContents.length > 0) {
-			setShowToast(true);
-		}
-	}, [cartContents]);
-
-	useEffect(() => {
 		const interval = setInterval(() => {
 			setShowToast(false);
 		}, 2000);
@@ -38,7 +32,7 @@ export default function Main() {
 				setCartContents={setCartContents}
 			/>
 			<Toast
-				show={showToast && !showCart}
+				show={showToast && !showCart  && cartContents.length > 0}
 				setShow={setShowToast}
 				itemName={lastItemAdded}
 			/>
