@@ -10,7 +10,7 @@ export default function Header() {
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			transition={{ duration: 0.75 }}
-			className="text-center"
+			className="text-center mb-2.5"
 		>
 			<Image
 				src="/logoColor.png"

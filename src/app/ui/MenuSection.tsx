@@ -4,15 +4,17 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { CartContent, Item } from "../utils/types";
 
-export default function Section({
+export default function MenuSection({
 	sectionName,
+	blurb,
 	items,
 	picture,
 	cartContents,
 	setCartContents,
-	setLastItemAdded
+	setLastItemAdded,
 }: {
 	sectionName: string;
+	blurb: string;
 	items: Item[];
 	picture?: string;
 	cartContents: CartContent[];
@@ -52,11 +54,12 @@ export default function Section({
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			transition={{ duration: 0.5 }}
-			className="bg-rose-800 shadow border-gray-600 border mb-3 sm:rounded-md"
+			className="bg-rose-800 shadow border-gray-600 border mb-3 sm:rounded-md pt-3"
 		>
-			<h5 className="font-extrabold pl-4 sm:px-6 pt-2 pb-1 text-2xl text-amber-100">
+			<h3 className="font-extrabold pl-4 sm:px-6 pt-2 pb-1 text-2xl text-amber-100">
 				{sectionName}
-			</h5>
+			</h3>
+			<h5 className="text-amber-100 italic pl-4 sm:px-6">{blurb}</h5>
 			<ul role="list" className="divide-y divide-gray-600">
 				{items.map((item: Item) => (
 					<li

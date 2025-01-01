@@ -27,7 +27,7 @@ export default function CartContainer({
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
 				onClick={() => setShowCart(true)}
-				className="fixed top-3 right-2 z-10 rounded-full w-6 h-6 text-center font-bold bg-amber-100 border cursor-pointer border-amber-100"
+				className="fixed top-1 sm:top-3 right-1 sm:right-2 z-30 rounded-full w-6 h-6 text-center font-bold bg-amber-100 border cursor-pointer border-amber-100"
 			>
 				{quantity}
 			</motion.div>
@@ -46,7 +46,7 @@ export default function CartContainer({
 				transition={{ duration: 6 }}
 				onClick={() => setShowCart(true)}
 			>
-				<ShoppingCartIcon className="w-16 cursor-pointer h-16 fixed top-3 right-3" />
+				<ShoppingCartIcon className="w-16 cursor-pointer bg-rose-800 h-16 fixed z-20 sm:top-3 sm:right-3 top-1 right-1" />
 			</motion.div>
 			<ShoppingCart
 				open={showCart}

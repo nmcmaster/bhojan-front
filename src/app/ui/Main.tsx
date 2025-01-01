@@ -1,11 +1,11 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "./Header";
 import ShoppingCartContainer from "./ShoppingCartContainer";
-import Section from "./Section";
+import MenuSection from "./MenuSection";
 import { CartContent } from "../utils/types";
-import { appetizers, vegEntree } from "../utils/data";
+import { menu } from "../utils/data";
 import Toast from "./Toast";
 
 export default function Main() {
@@ -13,15 +13,6 @@ export default function Main() {
 	const [lastItemAdded, setLastItemAdded] = useState("");
 	const [showToast, setShowToast] = useState(false);
 	const [showCart, setShowCart] = useState(false);
-
-	// useEffect(() => {
-	// 	for (const product of cartContents) {
-	// 		if (product.quantity === 0) {
-	// 			const index = cartContents.indexOf(product);
-	// 			cartContents.splice(index, 1);
-	// 		}
-	// 	}
-	// }, [cartContents]);
 
 	useEffect(() => {
 		if (cartContents.length > 0) {
@@ -51,27 +42,34 @@ export default function Main() {
 				setShow={setShowToast}
 				itemName={lastItemAdded}
 			/>
-			<div className="hidden sm:flex space-x-3">
-				<div className="pt-3 w-1/2 space-y-3">
-					<Section
-						picture="/appetizer.png"
-						sectionName="Appetizers"
-						items={appetizers}
+			<div className="hidden sm:grid grid-cols-2 gap-x-4 auto-rows-min">
+				{menu.map((section) => (
+					<MenuSection
+						sectionName={section.sectionName}
+						blurb={section.blurb}
+						items={section.items}
+						key={section.sectionName}
+						picture={section.picture ? section.picture : ""}
 						cartContents={cartContents}
 						setCartContents={setCartContents}
 						setLastItemAdded={setLastItemAdded}
 					/>
-				</div>
-				<div className="pt-3 w-1/2 space-y-3">
-					<Section
-						sectionName="Vegetarian Entree"
-						items={vegEntree}
-						cartContents={cartContents}
-						setCartContents={setCartContents}
-						setLastItemAdded={setLastItemAdded}
-					/>
-				</div>
+				))}
 			</div>
+			<div className="sm:hidden">
+				{menu.map((section) => (
+					<MenuSection
+						sectionName={section.sectionName}
+						blurb={section.blurb}
+						items={section.items}
+						key={section.sectionName}
+						picture={section.picture ? section.picture : ""}
+						cartContents={cartContents}
+						setCartContents={setCartContents}
+						setLastItemAdded={setLastItemAdded}
+					/>
+				))}
+			◊</div>
 		</>
 	);
 }

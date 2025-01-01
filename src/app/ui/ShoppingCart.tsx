@@ -11,68 +11,69 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { CartContent } from "../utils/types";
 import { useMemo, useCallback } from "react";
 import React from "react";
+import { motion } from "framer-motion";
 
 const formatPrice = (priceInPennies: number): string => {
 	const dollars = Math.floor(priceInPennies / 100);
 	const cents = priceInPennies % 100;
-	return `$${dollars}.${cents.toString().padStart(2, '0')}`;
+	return `$${dollars}.${cents.toString().padStart(2, "0")}`;
 };
 
 // Memoize individual cart items to prevent unnecessary re-renders
-const CartItem = React.memo(({
-	product,
-	onIncrement,
-	onDecrement,
-	onRemove
-}: {
-	product: CartContent;
-	onIncrement: (name: string) => void;
-	onDecrement: (name: string) => void;
-	onRemove: (name: string) => void;
-}) => (
-	<li className="flex py-6">
-		<div className="ml-4 flex flex-1 flex-col">
-			<div>
-				<div className="flex justify-between text-base font-medium">
-					<h3 className="text-amber-100 mb-1">
-						<div>{product.item.name}</div>
-					</h3>
-					<div className="ml-4 text-gray-100">
-						{formatPrice(product.item.price)}
+const CartItem = React.memo(
+	({
+		product,
+		onIncrement,
+		onDecrement,
+		onRemove,
+	}: {
+		product: CartContent;
+		onIncrement: (name: string) => void;
+		onDecrement: (name: string) => void;
+		onRemove: (name: string) => void;
+	}) => (
+		<li className="flex py-6">
+			<div className="ml-4 flex flex-1 flex-col">
+				<div>
+					<div className="flex justify-between text-base font-medium">
+						<h3 className="text-amber-100 mb-1">
+							<div>{product.item.name}</div>
+						</h3>
+						<div className="ml-4 text-gray-100">
+							{formatPrice(product.item.price)}
+						</div>
+					</div>
+				</div>
+				<div className="flex flex-1 items-end justify-between text-sm">
+					<div className="text-gray-100 flex">
+						<div className="mr-1.5">Qty: {product.quantity}</div>
+
+						<PlusIcon
+							className="w-5 h-5 text-rose-400 cursor-pointer"
+							onClick={() => onIncrement(product.item.name)}
+						/>
+						<MinusIcon
+							className="w-5 h-5 text-rose-400 cursor-pointer"
+							onClick={() => onDecrement(product.item.name)}
+						/>
+					</div>
+
+					<div className="flex">
+						<button
+							type="button"
+							onClick={() => onRemove(product.item.name)}
+							className="font-medium text-rose-400 hover:text-gray-100"
+						>
+							Remove
+						</button>
 					</div>
 				</div>
 			</div>
-			<div className="flex flex-1 items-end justify-between text-sm">
-				<div className="text-gray-100 flex">
-					<div className="mr-1.5">
-						Qty: {product.quantity}
-					</div>
+		</li>
+	)
+);
 
-					<PlusIcon
-						className="w-5 h-5 text-rose-400 cursor-pointer"
-						onClick={() => onIncrement(product.item.name)}
-					/>
-					<MinusIcon
-						className="w-5 h-5 text-rose-400 cursor-pointer"
-						onClick={() => onDecrement(product.item.name)}
-					/>
-				</div>
-
-				<div className="flex">
-					<button
-						type="button"
-						onClick={() => onRemove(product.item.name)}
-						className="font-medium text-rose-400 hover:text-gray-100"
-					>
-						Remove
-					</button>
-				</div>
-			</div>
-		</div>
-	</li>
-));
-
-CartItem.displayName = 'CartItem';
+CartItem.displayName = "CartItem";
 
 const ShoppingCart = ({
 	open,
@@ -83,64 +84,92 @@ const ShoppingCart = ({
 	open: boolean;
 	setOpen: (open: boolean) => void;
 	cartContents: CartContent[];
-	setCartContents: (cartContents: CartContent[] | ((prev: CartContent[]) => CartContent[])) => void;
+	setCartContents: (
+		cartContents: CartContent[] | ((prev: CartContent[]) => CartContent[])
+	) => void;
 }) => {
-	const handleIncrement = useCallback((productName: string) => {
-		setCartContents((prevContents: CartContent[]): CartContent[] => 
-			prevContents.map((cartItem: CartContent): CartContent => 
-				cartItem.item.name === productName
-					? { ...cartItem, quantity: cartItem.quantity + 1 }
-					: cartItem
-			)
-		);
-	}, [setCartContents]);
-
-	const handleRemove = useCallback((productName: string) => {
-		setCartContents((prevContents: CartContent[]): CartContent[] => 
-			prevContents.filter((cartItem: CartContent): boolean => 
-				cartItem.item.name !== productName
-			)
-		);
-	}, [setCartContents]);
-
-	const handleDecrement = useCallback((productName: string) => {
-		setCartContents((prevContents: CartContent[]): CartContent[] => 
-			prevContents
-				.map((cartItem: CartContent): CartContent => 
-					cartItem.item.name === productName
-						? { ...cartItem, quantity: cartItem.quantity - 1 }
-						: cartItem
+	const handleIncrement = useCallback(
+		(productName: string) => {
+			setCartContents((prevContents: CartContent[]): CartContent[] =>
+				prevContents.map(
+					(cartItem: CartContent): CartContent =>
+						cartItem.item.name === productName
+							? { ...cartItem, quantity: cartItem.quantity + 1 }
+							: cartItem
 				)
-				.filter((cartItem: CartContent): boolean => cartItem.quantity > 0)
-		);
-	}, [setCartContents]);
+			);
+		},
+		[setCartContents]
+	);
 
-	const subtotal = useMemo(() => 
-		cartContents.reduce((acc, item) => 
-			acc + item.item.price * item.quantity, 0
-		),
+	const handleRemove = useCallback(
+		(productName: string) => {
+			setCartContents((prevContents: CartContent[]): CartContent[] =>
+				prevContents.filter(
+					(cartItem: CartContent): boolean =>
+						cartItem.item.name !== productName
+				)
+			);
+		},
+		[setCartContents]
+	);
+
+	const handleDecrement = useCallback(
+		(productName: string) => {
+			setCartContents((prevContents: CartContent[]): CartContent[] =>
+				prevContents
+					.map(
+						(cartItem: CartContent): CartContent =>
+							cartItem.item.name === productName
+								? {
+										...cartItem,
+										quantity: cartItem.quantity - 1,
+								  }
+								: cartItem
+					)
+					.filter(
+						(cartItem: CartContent): boolean =>
+							cartItem.quantity > 0
+					)
+			);
+		},
+		[setCartContents]
+	);
+
+	const subtotal = useMemo(
+		() =>
+			cartContents.reduce(
+				(acc, item) => acc + item.item.price * item.quantity,
+				0
+			),
 		[cartContents]
 	);
 
 	// Memoize the cart items list to prevent unnecessary re-renders
-	const cartItemsList = useMemo(() => (
-		cartContents.length === 0 ? (
-			<h1 className="text-gray-100 pt-4">
-				You don't have any items in your cart. Please
-				select some delicious food to get started!
-			</h1>
-		) : (
-			cartContents.map((product) => (
-				<CartItem
-					key={product.item.name}
-					product={product}
-					onIncrement={handleIncrement}
-					onDecrement={handleDecrement}
-					onRemove={handleRemove}
-				/>
-			))
-		)
-	), [cartContents, handleIncrement, handleDecrement, handleRemove]);
+	const cartItemsList = useMemo(
+		() =>
+			cartContents.length === 0 ? (
+				<motion.h1
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					className="text-gray-100 pt-4"
+				>
+					You don't have any items in your cart. Please select some
+					delicious food to get started!
+				</motion.h1>
+			) : (
+				cartContents.map((product) => (
+					<CartItem
+						key={product.item.name}
+						product={product}
+						onIncrement={handleIncrement}
+						onDecrement={handleDecrement}
+						onRemove={handleRemove}
+					/>
+				))
+			),
+		[cartContents, handleIncrement, handleDecrement, handleRemove]
+	);
 
 	return (
 		<Dialog open={open} onClose={setOpen} className="relative z-30">
@@ -195,10 +224,12 @@ const ShoppingCart = ({
 								<div className="border-t border-gray-500 px-4 py-6 sm:px-6">
 									<div className="flex justify-between text-base font-medium text-amber-100">
 										<div>Subtotal</div>
-										<div className="text-gray-100">
+										<motion.div className="text-gray-100">
 											{" "}
-											{subtotal > 0 ? formatPrice(subtotal) : "$0.00"}
-										</div>
+											{subtotal > 0
+												? formatPrice(subtotal)
+												: "$0.00"}
+										</motion.div>
 									</div>
 									<p className="mt-1 text-sm text-gray-100">
 										Delivery fee and taxes calculated at
