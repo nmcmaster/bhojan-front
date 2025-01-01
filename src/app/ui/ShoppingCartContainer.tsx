@@ -46,7 +46,7 @@ export default function CartContainer({
 				transition={{ duration: 6 }}
 				onClick={() => setShowCart(true)}
 			>
-				<ShoppingCartIcon className="w-16 cursor-pointer bg-rose-800 h-16 fixed z-20 sm:top-3 sm:right-3 top-1 right-1" />
+				<ShoppingCartIcon className="w-16 cursor-pointer bg-rose-800 h-16 fixed z-20 sm:top-3 sm:right-3 top-0 right-0" />
 			</motion.div>
 			<ShoppingCart
 				open={showCart}
