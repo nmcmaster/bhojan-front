@@ -88,7 +88,7 @@ export default function MenuSection({
 									addToCart(item);
 								}}
 							>
-								<PlusCircleIcon className="text-rose-950 hover:text-rose-600 shadow cursor-pointer" />
+								<PlusCircleIcon className="text-rose-950 hover:text-rose-600 shadow z-0 cursor-pointer" />
 							</motion.div>
 						</div>
 					</li>
