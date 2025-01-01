@@ -10,9 +10,11 @@ export default function MenuSection({
 	items,
 	picture,
 	cartContents,
+	setShowToast,
 	setCartContents,
 	setLastItemAdded,
 }: {
+	
 	sectionName: string;
 	blurb: string;
 	items: Item[];
@@ -20,6 +22,7 @@ export default function MenuSection({
 	cartContents: CartContent[];
 	setCartContents: (CartContents: CartContent[]) => void;
 	setLastItemAdded: (itemName: string) => void;
+	setShowToast: (showToast: boolean) => void;
 }) {
 	// function addToCart(item: Item) {
 	// 	const existingItem = cartContents.find(cartItem => cartItem.item.name === item.name);
@@ -86,6 +89,7 @@ export default function MenuSection({
 								onClick={() => {
 									setLastItemAdded(item.name);
 									addToCart(item);
+									setShowToast(true);
 								}}
 							>
 								<PlusCircleIcon className="text-rose-950 hover:text-rose-600 shadow z-0 cursor-pointer" />

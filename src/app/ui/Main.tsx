@@ -32,7 +32,7 @@ export default function Main() {
 				setCartContents={setCartContents}
 			/>
 			<Toast
-				show={showToast && !showCart  && cartContents.length > 0}
+				show={showToast && !showCart && cartContents.length > 0}
 				setShow={setShowToast}
 				itemName={lastItemAdded}
 			/>
@@ -47,6 +47,7 @@ export default function Main() {
 								items={section.items}
 								key={section.sectionName}
 								picture={section.picture ? section.picture : ""}
+								setShowToast={setShowToast}
 								cartContents={cartContents}
 								setCartContents={setCartContents}
 								setLastItemAdded={setLastItemAdded}
@@ -63,6 +64,7 @@ export default function Main() {
 								items={section.items}
 								key={section.sectionName}
 								picture={section.picture ? section.picture : ""}
+								setShowToast={setShowToast}
 								cartContents={cartContents}
 								setCartContents={setCartContents}
 								setLastItemAdded={setLastItemAdded}
@@ -81,6 +83,7 @@ export default function Main() {
 						cartContents={cartContents}
 						setCartContents={setCartContents}
 						setLastItemAdded={setLastItemAdded}
+						setShowToast={setShowToast}
 					/>
 				))}
 				◊
