@@ -10,7 +10,7 @@ export default function CartContainer({
 	setCartContents,
 }: {
 	cartContents: CartContent[];
-	setCartContents: (CartContents: CartContent[]) => void;
+	setCartContents: (cartContents: CartContent[] | ((prev: CartContent[]) => CartContent[])) => void;
 }) {
 	const [open, setOpen] = useState(false);
 	let quantity = 0;

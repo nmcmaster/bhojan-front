@@ -6,7 +6,7 @@ import {
 	DialogPanel,
 	DialogTitle,
 } from "@headlessui/react";
-import { PlusIcon } from "@heroicons/react/16/solid";
+import { MinusIcon, PlusIcon } from "@heroicons/react/16/solid";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { CartContent } from "../utils/types";
 
@@ -19,8 +19,38 @@ export default function ShoppingCart({
 	open: boolean;
 	setOpen: (open: boolean) => void;
 	cartContents: CartContent[];
-	setCartContents: (cartContents: CartContent[]) => void;
+	setCartContents: (cartContents: CartContent[] | ((prev: CartContent[]) => CartContent[])) => void;
 }) {
+	const handleIncrement = (productName: string) => {
+		setCartContents((prevContents: CartContent[]): CartContent[] => 
+			prevContents.map((cartItem: CartContent): CartContent => 
+				cartItem.item.name === productName
+					? { ...cartItem, quantity: cartItem.quantity + 1 }
+					: cartItem
+			)
+		);
+	};
+
+	const handleRemove = (productName: string) => {
+		setCartContents((prevContents: CartContent[]): CartContent[] => 
+			prevContents.filter((cartItem: CartContent): boolean => 
+				cartItem.item.name !== productName
+			)
+		);
+	};
+
+	const handleDecrement = (productName: string) => {
+		setCartContents((prevContents: CartContent[]): CartContent[] => 
+			prevContents
+				.map((cartItem: CartContent): CartContent => 
+					cartItem.item.name === productName
+						? { ...cartItem, quantity: cartItem.quantity - 1 }
+						: cartItem
+				)
+				.filter((cartItem: CartContent): boolean => cartItem.quantity > 0)
+		);
+	};
+
 	const subtotal = cartContents.reduce((acc, item) => {
 		return acc + item.item.price * item.quantity;
 	}, 0);
@@ -69,15 +99,15 @@ export default function ShoppingCart({
 												role="list"
 												className="-my-6 divide-y divide-gray-500"
 											>
-												{cartContents.length === 0 && (
+												{cartContents.length === 0 ? (
 													<h1 className="text-gray-100 pt-4">
 														You don't have any items
 														in your cart. Please
 														select some delicious
 														food to get started!
 													</h1>
-												)}
-												{cartContents.map((product) => (
+												) : (
+													cartContents.map((product) => (
 													<li
 														key={product.item.name}
 														className="flex py-6"
@@ -113,20 +143,28 @@ export default function ShoppingCart({
 																</div>
 															</div>
 															<div className="flex flex-1 items-end justify-between text-sm">
-																<div className="text-gray-100 flex space-x-1">
-																	<div>
+																<div className="text-gray-100 flex">
+																	<div className="mr-1.5">
 																		Qty:{" "}
 																		{
 																			product.quantity
 																		}
 																	</div>
 
-																	<PlusIcon className="w-5 h-5 text-rose-400" />
+																	<PlusIcon
+																		className="w-5 h-5 text-rose-400 cursor-pointer"
+																		onClick={() => handleIncrement(product.item.name)}
+																	/>
+																	<MinusIcon
+																		className="w-5 h-5 text-rose-400 cursor-pointer"
+																		onClick={() => handleDecrement(product.item.name)}
+																	/>
 																</div>
 
 																<div className="flex">
 																	<button
 																		type="button"
+																		onClick={() => handleRemove(product.item.name)}
 																		className="font-medium text-rose-400 hover:text-gray-100"
 																	>
 																		Remove
@@ -135,7 +173,8 @@ export default function ShoppingCart({
 															</div>
 														</div>
 													</li>
-												))}
+													))
+												)}
 											</ul>
 										</div>
 									</div>
@@ -143,16 +182,21 @@ export default function ShoppingCart({
 
 								<div className="border-t border-gray-500 px-4 py-6 sm:px-6">
 									<div className="flex justify-between text-base font-medium text-amber-100">
-										<p>Subtotal</p>
-										<p className="text-gray-100">
+										<div>Subtotal</div>
+										<div className="text-gray-100">
 											{" "}
 											$
 											{subtotal > 0
 												? `${subtotal
 														.toString()
-														.slice(0, -2)}.${subtotal.toString().slice(-2)}`
+														.slice(
+															0,
+															-2
+														)}.${subtotal
+														.toString()
+														.slice(-2)}`
 												: "0.00"}
-										</p>
+										</div>
 									</div>
 									<p className="mt-1 text-sm text-gray-100">
 										Delivery fee and taxes calculated at

@@ -13,6 +13,15 @@ export default function Main() {
 	const [lastItemAdded, setLastItemAdded] = useState("");
 	const [showToast, setShowToast] = useState(false);
 
+	// useEffect(() => {
+	// 	for (const product of cartContents) {
+	// 		if (product.quantity === 0) {
+	// 			const index = cartContents.indexOf(product);
+	// 			cartContents.splice(index, 1);
+	// 		}
+	// 	}
+	// }, [cartContents]);
+
 	useEffect(() => {
 		if (cartContents.length > 0) {
 			setShowToast(true);
