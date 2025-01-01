@@ -42,19 +42,39 @@ export default function Main() {
 				setShow={setShowToast}
 				itemName={lastItemAdded}
 			/>
-			<div className="hidden sm:grid grid-cols-2 gap-x-4 auto-rows-min">
-				{menu.map((section) => (
-					<MenuSection
-						sectionName={section.sectionName}
-						blurb={section.blurb}
-						items={section.items}
-						key={section.sectionName}
-						picture={section.picture ? section.picture : ""}
-						cartContents={cartContents}
-						setCartContents={setCartContents}
-						setLastItemAdded={setLastItemAdded}
-					/>
-				))}
+			<div className="hidden sm:flex sm:gap-x-4">
+				<div className="w-1/2">
+					{menu
+						.filter((section) => section.position === "left")
+						.map((section) => (
+							<MenuSection
+								sectionName={section.sectionName}
+								blurb={section.blurb}
+								items={section.items}
+								key={section.sectionName}
+								picture={section.picture ? section.picture : ""}
+								cartContents={cartContents}
+								setCartContents={setCartContents}
+								setLastItemAdded={setLastItemAdded}
+							/>
+						))}
+				</div>
+				<div className="w-1/2">
+					{menu
+						.filter((section) => section.position === "right")
+						.map((section) => (
+							<MenuSection
+								sectionName={section.sectionName}
+								blurb={section.blurb}
+								items={section.items}
+								key={section.sectionName}
+								picture={section.picture ? section.picture : ""}
+								cartContents={cartContents}
+								setCartContents={setCartContents}
+								setLastItemAdded={setLastItemAdded}
+							/>
+						))}
+				</div>
 			</div>
 			<div className="sm:hidden">
 				{menu.map((section) => (
@@ -69,7 +89,8 @@ export default function Main() {
 						setLastItemAdded={setLastItemAdded}
 					/>
 				))}
-			◊</div>
+				◊
+			</div>
 		</>
 	);
 }

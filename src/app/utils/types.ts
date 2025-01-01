@@ -15,4 +15,5 @@ export interface MenuSection {
 	blurb: string;
 	items: Item[];
 	picture?: string;
+	position: string;
 }

@@ -54,7 +54,7 @@ export default function MenuSection({
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			transition={{ duration: 0.5 }}
-			className="bg-rose-800 shadow border-gray-600 border mb-3 sm:rounded-md pt-3"
+			className="bg-rose-800 shadow border-gray-600 border mb-3 sm:mb-8 sm:rounded-md pt-1"
 		>
 			<h3 className="font-extrabold pl-4 sm:px-6 pt-2 pb-1 text-2xl text-amber-100">
 				{sectionName}

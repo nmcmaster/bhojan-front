@@ -3,6 +3,7 @@ import { MenuSection } from "./types";
 export const menu: MenuSection[] = [
 	{
 		sectionName: "Appetizers",
+		position: "left",
 		picture: "/appetizer.png",
 		blurb: "Served with homemade mint & tamarind chutneys",
 		items: [
@@ -55,7 +56,7 @@ export const menu: MenuSection[] = [
 	{
 		sectionName: "Vegetarian Entree",
 		blurb: "Served with basmati rice. Brown rice + $1.95",
-		picture: "/appetizer.png",
+		position: "right",
 		items: [
 			{
 				name: "Aloo Gobi",
@@ -101,6 +102,7 @@ export const menu: MenuSection[] = [
 	{
 		sectionName: "Grilled",
 		picture: "/grilled.png",
+		position: "right",
 		blurb: "Delicacies from the clay over tandoor",
 		items: [
 			{
@@ -134,6 +136,7 @@ export const menu: MenuSection[] = [
 	{
 		sectionName: "Chicken Entree",
 		blurb: "Served with basmati rice. Brown rice + $1.95",
+		position: "right",
 		items: [
 			{
 				name: "Chicken Tikka Masala",
@@ -168,6 +171,7 @@ export const menu: MenuSection[] = [
 	{
 		sectionName: "Lamb",
 		picture: "/lamb.png",
+		position: "left",
 		blurb: "Served with basmati rice. Brown rice + $1.95",
 		items: [
 			{
@@ -207,6 +211,7 @@ export const menu: MenuSection[] = [
 	},
 	{
 		sectionName: "Seafood",
+		position: "right",
 		blurb: "Served with basmati rice. Brown rice + $1.95",
 		items: [
 			{
@@ -235,6 +240,7 @@ export const menu: MenuSection[] = [
 
 	{
 		sectionName: "Bread",
+		position: "left",
 		picture: "/naan.png",
 		blurb: "Delicacies from the clay oven tandoor",
 		items: [
