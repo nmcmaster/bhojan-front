@@ -1,7 +1,13 @@
 import { Nunito_Sans } from "next/font/google";
 import Main from "./ui/Main";
+import { Metadata } from "next";
 
 const nunito = Nunito_Sans({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
+	title: "Bhojan Indian Restaurant",
+	description: "Delicious Indian food serving Ridgewood and Bushwick",
+};
 
 export default function Home() {
 	return (
