@@ -34,7 +34,8 @@ export default function Main() {
 			<Toast
 				show={showToast && !showCart && cartContents.length > 0}
 				setShow={setShowToast}
-				itemName={lastItemAdded}
+				// itemName={lastItemAdded}
+				itemName="test"
 			/>
 			<div className="hidden sm:flex sm:gap-x-4">
 				<div className="w-1/2">
@@ -86,7 +87,6 @@ export default function Main() {
 						setShowToast={setShowToast}
 					/>
 				))}
-				◊
 			</div>
 		</>
 	);

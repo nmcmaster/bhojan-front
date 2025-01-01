@@ -62,7 +62,7 @@ const CartItem = React.memo(
 						<button
 							type="button"
 							onClick={() => onRemove(product.item.name)}
-							className="font-medium text-rose-400 hover:text-gray-100"
+							className="font-medium text-rose-400"
 						>
 							Remove
 						</button>
