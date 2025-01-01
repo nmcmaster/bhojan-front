@@ -23,9 +23,10 @@ export default function Toast({
 				<div className="flex w-full flex-col items-center space-y-4 sm:items-start0">
 					{/* Notification panel, dynamically insert this into the live region when it needs to be displayed */}
 					<Transition show={show}>
-						<motion.div
-							initial={{ opacity: 0 }}
-							animate={{ opacity: 1 }}
+						{/* <motion.div */}
+						<div
+							// initial={{ opacity: 0 }}
+							// animate={{ opacity: 1 }}
 							className="pointer-events-auto0 w-full max-w-sm overflow-hidden rounded-lg bg-rose-900 shadow-lg ring-1 ring-black/5 transition data-[closed]:data-[enter]:translate-y-2 data-[enter]:transform data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-100 data-[enter]:ease-out data-[leave]:ease-in data-[closed]:data-[enter]:sm:translate-x-2 data-[closed]:data-[enter]:sm:translate-y-0"
 						>
 							<div className="p-4">
@@ -64,7 +65,8 @@ export default function Toast({
 									</div>
 								</div>
 							</div>
-						</motion.div>
+						</div>
+						{/* </motion.div> */}
 					</Transition>
 				</div>
 			</div>
