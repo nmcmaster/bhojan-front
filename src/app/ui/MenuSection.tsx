@@ -51,6 +51,7 @@ export default function MenuSection({
 			setCartContents([...cartContents, { item, quantity: 1 }]);
 		}
 	}
+	console.log("picture url", picture);
 
 	return (
 		<motion.div
